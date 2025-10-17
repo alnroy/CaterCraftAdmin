@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'Admin:admin_home' %}">Home</a></li>
+                <li><a href="{% url 'Admin:view_all_users' %}">View Users</a></li>
+                <li><a href="#">View Staff</a></li>
+                <li><a href="#">Add Staff</a></li>
+                <li><a href="{% url 'Guest:home' %}">Logout</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Admin Panel</p>
+    </footer>
+</body>
+</html>

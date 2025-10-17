@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Event Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .success {
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <input type="hidden" id="user_type" value="Admin" />
+    <button onclick="login()">Login</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const user_type = document.getElementById('user_type').value;
+
+      fetch("{% url 'Guest:logins' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password, user_type })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const msgDiv = document.getElementById('message');
+        if (data.message === 'Login successful') {
+          msgDiv.className = 'success';
+          msgDiv.innerText = data.message;
+          setTimeout(() => {
+            window.location.href =  "{% url 'Admin:adminhome' %}";
+          }, 1000);
+        } else {
+          msgDiv.className = 'error';
+          msgDiv.innerText = data.message;
+          alert(data.message)
+        }
+      });
+    }
+  </script>
+</body>
+</html>

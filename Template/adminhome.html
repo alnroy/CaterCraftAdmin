@@ -1,0 +1,53 @@
+<!-- templates/Admin/base_admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin | Event Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <nav class="w-64 bg-blue-800 text-white flex flex-col py-6 px-4 space-y-4">
+      <h1 class="text-2xl font-bold mb-6">Admin Panel</h1>
+      <a href="{% url 'Admin:adminhome' %}" class="hover:bg-blue-700 px-3 py-2 rounded">Dashboard</a>
+      <a href="{% url 'Admin:profile' %}" class="hover:bg-blue-700 px-3 py-2 rounded">Profile</a>
+      <a href="{% url 'Admin:view_customers' %}" class="hover:bg-blue-700 px-3 py-2 rounded">View Customers</a>
+      <a href="{% url 'Admin:view_owners' %}" class="hover:bg-blue-700 px-3 py-2 rounded">View Owners</a>
+      <a href="{% url 'Admin:view_feedbacks' %}" class="hover:bg-blue-700 px-3 py-2 rounded">View Feedbacks</a>
+            <a href="{% url 'Guest:logins' %}" class="hover:bg-blue-700 px-3 py-2 rounded">Logout</a>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      {% block content %}
+  <h2 class="text-3xl font-semibold mb-4">Welcome, Admin!</h2>
+  <p class="text-gray-700">Manage all event operations, view feedback, and monitor users here.</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-semibold text-lg mb-2">Customers</h3>
+      <p>View all registered customers.</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-semibold text-lg mb-2">Event Owners</h3>
+      <p>View and manage event organizers.</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-semibold text-lg mb-2">Feedbacks</h3>
+      <p>Check feedback from users and participants.</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+      <h3 class="font-semibold text-lg mb-2">Profile</h3>
+      <p>Update admin details and settings.</p>
+    </div>
+  </div>
+
+      {% endblock %}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!-- templates/success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Success</title>
+  <style>
+    body {
+      background: #e9fbe9;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .message-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .message-box h2 {
+      color: #28a745;
+    }
+    .message-box a {
+      margin-top: 15px;
+      display: inline-block;
+      text-decoration: none;
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    .message-box a:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="message-box">
+    <h2>{{ message }}</h2>
+  </div>
+</body>
+</html>

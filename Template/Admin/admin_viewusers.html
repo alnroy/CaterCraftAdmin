@@ -1,0 +1,95 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}View All Users{% endblock %}
+
+{% block content %}
+    <h1>All Users</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date of Birth</th>
+                <th>Date Joined</th>
+                <th>Last Login</th>
+                <th>Is Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.date_of_birth }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>{{ user.last_login }}</td>
+                <td>{{ user.is_active }}</td>
+                <td>
+                    
+                    {% if user.is_active %}
+                    <button class="block-user" data-user-id="{{ user.id }}">Block User</button>
+                   {% else %}
+                   <button class="block-user" data-user-id="{{ user.id }}">Unblock</button>
+
+                    {% endif %}
+                        
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="message"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(document).ready(function() {
+            const csrftoken = getCookie('csrftoken');
+
+            $('.block-user').on('click', function(event) {
+                event.preventDefault();
+
+                const userId = $(this).data('user-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "Admin:view_all_users" %}',
+                    data: JSON.stringify({ 'user_id': userId }),
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    success: function(response) {
+                        $('#message').html('<p>' + response.message + '</p>');
+                        location.reload();  // Reload the page to reflect changes
+                    },
+                    error: function(error) {
+                        $('#message').html('<p>An error occurred. Please try again.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

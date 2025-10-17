@@ -1,0 +1,86 @@
+{% extends 'User/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+    <h1>Edit Your Profile</h1>
+    <form id="edit-profile-form" method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}"><br>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" value="{{ user.phone_number }}"><br>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address">{{ user.address }}</textarea><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}"><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}"><br>
+
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ user.date_of_birth }}"><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const csrftoken = getCookie('csrftoken');
+
+            $('#edit-profile-form').on('submit', function(event) {
+                event.preventDefault();
+
+                const formData = {
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    phone_number: $('#phone_number').val(),
+                    address: $('#address').val(),
+                    first_name: $('#first_name').val(),
+                    last_name: $('#last_name').val(),
+                    date_of_birth: $('#date_of_birth').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "User:edit_profile" %}',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    success: function(response) {
+                        $('#message').html('<p>' + response.message + '</p>');
+                    },
+                    error: function(error) {
+                        $('#message').html('<p>An error occurred. Please try again.</p>');
+                    }
+                });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+<!-- templates/Admin/profile.html -->
+{% extends "adminhome.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">My Profile</h2>
+
+{% if error %}
+  <div class="text-red-500">{{ error }}</div>
+{% else %}
+  <div class="bg-white shadow rounded p-6 max-w-xl">
+    <p><strong>Username:</strong> {{ admin.username }}</p>
+    <p><strong>Email:</strong> {{ admin.email }}</p>
+    <p><strong>Phone Number:</strong> {{ admin.phone_number|default:"Not provided" }}</p>
+    <p><strong>Address:</strong> {{ admin.address|default:"Not provided" }}</p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h1>Login</h1>
+<form id="login-form" method="post">
+    {% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username"><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br>
+
+    <label for="user_type">User Type:</label>
+    <select id="user_type" name="user_type">
+        <option value="Admin">Admin</option>
+        <option value="Sub Admin">Sub Admin</option>
+        <option value="User">User</option>
+    </select><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<div id="message"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#login-form').on('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = {
+                username: $('#username').val(),
+                password: $('#password').val(),
+                user_type: $('#user_type').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "Guest:login" %}',
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function(response) {
+                    $('#message').html('<p>' + response.message + '</p>');
+                    if (response.message === 'Login successful') {
+                        if (response.user_type === 'Admin') {
+                            window.location.href = '{% url "Admin:admin_home" %}';
+                        } else if (response.user_type === 'Sub Admin') {
+                            window.location.href = '{% url "Guest:home" %}';
+                        } else if (response.user_type === 'User') {
+                            window.location.href = '{% url "User:user_home" %}';
+                        }
+                    }
+                },
+                error: function(error) {
+                    $('#message').html('<p>An error occurred. Please try again.</p>');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

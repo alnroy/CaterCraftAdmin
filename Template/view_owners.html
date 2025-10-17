@@ -1,0 +1,55 @@
+{% extends "adminhome.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Owner List</h2>
+
+<table class="min-w-full bg-white rounded shadow">
+  <thead>
+    <tr class="bg-blue-800 text-white">
+      <th class="py-2 px-4">Company</th>
+      <th class="py-2 px-4">Name</th>
+      <th class="py-2 px-4">Email</th>
+      <th class="py-2 px-4">Mobile</th>
+      <th class="py-2 px-4">License</th>
+      <th class="py-2 px-4">Status</th>
+      <th class="py-2 px-4">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for owner in owners %}
+    <tr class="border-b">
+      <td class="py-2 px-4">{{ owner.company_name }}</td>
+      <td class="py-2 px-4">{{ owner.name }}</td>
+      <td class="py-2 px-4">{{ owner.email_id_owner }}</td>
+      <td class="py-2 px-4">{{ owner.mob_no }}</td>
+      <td class="py-2 px-4">
+        {% if owner.license_document %}
+          <a href="{{ owner.license_document.url }}" target="_blank" class="text-blue-600 underline">View</a>
+        {% else %}
+          N/A
+        {% endif %}
+      </td>
+      <td class="py-2 px-4">
+        {% if owner.status == 0 %}
+          <span class="text-yellow-600">Pending</span>
+        {% elif owner.status == 1 %}
+          <span class="text-green-600">Approved</span>
+        {% else %}
+          <span class="text-red-600">Rejected</span>
+        {% endif %}
+      </td>
+      <td class="py-2 px-4 space-x-2">
+        {% if owner.status == 0 %}
+          <a href="{% url 'Admin:approve_owner' owner.email_id_owner %}" class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded">Approve</a>
+          <a href="{% url 'Admin:reject_owner' owner.email_id_owner %}" class="bg-yellow-600 hover:bg-yellow-700 text-white px-2 py-1 rounded">Reject</a>
+        {% endif %}
+        <a href="{% url 'Admin:remove_owner' owner.email_id_owner %}" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+           onclick="return confirm('Are you sure you want to remove this owner?')">Remove</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7" class="py-4 text-center">No owners found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

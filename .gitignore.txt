@@ -1,0 +1,25 @@
+# Python/Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.log
+.env
+
+# Django migrations
+*/migrations/*.pyc
+*/migrations/*.py[cod]
+
+# Virtual Environment
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Static files
+/staticfiles/
